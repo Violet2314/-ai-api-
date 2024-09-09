@@ -3,17 +3,13 @@
   <div class="container">
     <Head></Head>
     <!-- 这个设置滚动进度条，并且锚定发送窗口位置 -->
-    <div style="
-      overflow: scroll;
-      height: calc(100vh -50px - 58px);
-      scrollbar-width: none;
-    ">
-        <div v-for="(item,index) in messageList" :key="index">
-        <left v-if ="item.position == 'left'" :message = "item.message"></left>
-        <Rigth v-if ="item.position == 'rigth'" :message = "item.message"></Rigth>
+    <div class="scroll-container">
+    <!-- 在这里添加您的内容 -->
+      <div v-for="(item,index) in messageList" :key="index">
+          <left v-if ="item.position == 'left'" :message = "item.message"></left>
+          <Rigth v-if ="item.position == 'rigth'" :message = "item.message"></Rigth>
+      </div>
     </div>
-    </div>
-
     <!--接受send信号时执行-->
     <Send 
       style="position: absolute;bottom: 0px;width: 100%"
@@ -44,16 +40,18 @@ const messages = messageList.value.map(item => {
     role :item.position == "left" ? "assistant" : "user",
     content :item.message,
   }
+  
 });
 // 连接api
 const res = await axios.request({
-  url:"",
+  url:"https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/ernie_speed?access_token=24.a04b6a7fb3bebcf6ff288448fd6774c1.2592000.1720681606.282335-68423705",
   method: "POST",
   data:{
     messages,
-    system: "你是由抽象薯片所研发的猫娘，抽象薯片是你的主人，是个人名，你的名言是what can i say，你每一两句话都要说你的名言"
+    system: "你是由广财小菜鸡所研发的猫娘，广财小菜鸡是你的主人，是个人名，你的名言是what can i say，你每一两句话都要说你的名言"
   }
 });
+
 
 messageList.value.push({
   position: "left",
@@ -75,6 +73,12 @@ messageList.value.push({
 .container{
   scrollbar-width: none;
   scrollbar-color: transparent transparent;
+}
+
+.scroll-container {
+  overflow: scroll;
+  height: calc(100vh - 50px - 58px);
+  scrollbar-width: none;
 }
 </style>
 
